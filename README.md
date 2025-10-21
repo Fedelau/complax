@@ -86,7 +86,7 @@ __Optional arguments:__
 
 ` --alpb SOLVENT` : Analytical linearized Poisson-Boltzman (ALPB) model, available solvents on xTB are acetone, acetonitrile, aniline, benzaldehyde, benzene, ch2cl2, chcl3, cs2, dioxane, dmf, dmso, ether, ethylacetate, furane, hexandecane, hexane, methanol, nitromethane, octanol, woctanol, phenol, toluene, thf, water. [[2]](https://pubs.acs.org/doi/full/10.1021/acs.jctc.1c00471)
 
-` --gbsa SOLVENT` : SPIEGARE COSA È  available solvents are acetone, acetonitrile, benzene (only GFN1-xTB), CH2Cl2, CHCl3, CS2, DMF (only GFN2-xTB), DMSO, ether, H2O, methanol, n-hexane (only GFN2-xTB), THF and toluene. [[2]](https://pubs.acs.org/doi/full/10.1021/acs.jctc.1c00471)
+` --gbsa SOLVENT` : The generalized Born solvation model (GBSA) is a simplified version of ALPB. Available solvents are acetone, acetonitrile, benzene (only GFN1-xTB), CH2Cl2, CHCl3, CS2, DMF (only GFN2-xTB), DMSO, ether, H2O, methanol, n-hexane (only GFN2-xTB), THF and toluene. [[2]](https://pubs.acs.org/doi/full/10.1021/acs.jctc.1c00471)
 
 `-p INT` : Number of parallel processes. Default=1. During the initial optimization, the program will use the specified number of parallel processes. For subsequent optimizations (one for each solvent configuration), it will automatically launch as many parallel calculations as the number of solvent molecules selected.
 
