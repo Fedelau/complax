@@ -43,9 +43,5 @@ jobs:
         pwd
         ls -R
     - name: Run example
-      run: |
-        if [ -f examples/meli.xyz ] && [ -f examples/thf.xyz ]; then
-          python complax/complax.py examples/meli.xyz examples/thf.xyz -a 5 2 -c 3 --solvfx
-        else
-          echo "Example files not found, skipping."
-        fi
+          run: |
+            python -c "from complax import complax; complax.main(['examples/meli.xyz','examples/thf.xyz','-a','5','2','-c','3','--solvfx'])"
