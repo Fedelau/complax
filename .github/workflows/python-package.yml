@@ -43,5 +43,5 @@ jobs:
         pwd
         ls -R
     - name: Run example
-          run: |
-            python -c "from complax import complax; complax.main(['examples/meli.xyz','examples/thf.xyz','-a','5','2','-c','3','--solvfx'])"
+      run: |
+        python -c "from complax import complax; complax.main(['examples/meli.xyz','examples/thf.xyz','-a','5','2','-c','3','--solvfx'])"
