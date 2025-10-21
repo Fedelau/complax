@@ -45,7 +45,7 @@ jobs:
     - name: Run example
       run: |
         if [ -f examples/meli.xyz ] && [ -f examples/thf.xyz ]; then
-          python complax.py examples/meli.xyz examples/thf.xyz -a 5 2 -c 3 --solvfx
+          python complax/complax.py examples/meli.xyz examples/thf.xyz -a 5 2 -c 3 --solvfx
         else
           echo "Example files not found, skipping."
         fi
