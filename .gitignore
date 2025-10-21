@@ -1,0 +1,21 @@
+# Python cache files and build artifacts
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/  
+
+# MacOS system files
+.DS_Store
+
+# Virtual environment
+venv/
+env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDE specific files
+.vscode/
+.idea/
