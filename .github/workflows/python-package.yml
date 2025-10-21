@@ -38,7 +38,7 @@ jobs:
     - name: Test COMPLAX
       run: |
         python -c "import complax; print('COMPLAX imported successfully')"
-    - name: - name: Debug folder
+    - name: Debug folder
       run: |
         pwd
         ls -R
