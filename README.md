@@ -1,5 +1,5 @@
 ![COMPLAX](complax-high-resolution-logo.png) 
-[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/federicalauria/complax/releases) ![PyPI](https://img.shields.io/pypi/v/complax.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+[![Python package](https://github.com/Fedelau/complax/actions/workflows/python-package.yml/badge.svg)](https://github.com/Fedelau/complax/actions/workflows/python-package.yml) [![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/federicalauria/complax/releases) ![PyPI](https://img.shields.io/pypi/v/complax.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
 Complax is a Python tool designed to position solvent molecules (provided as `.xyz` files) around a user-specified atom of another molecule, also supplied in `.xyz` format.  
 It was primarily developed for the microsolvation of small organic molecules, but it can also be applied to other molecular systems, for instance as a starting point for further modeling or optimization studies.
