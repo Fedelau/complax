@@ -15,7 +15,7 @@ from functools import partial
 from multiprocessing import Pool
 import tqdm
 from tabulate import tabulate
-import pkg_resources
+from importlib.metadata import version, PackageNotFoundError
 
 
 def print_banner():
@@ -188,16 +188,17 @@ def main():
         epilog="For further information, please contact the programme author.",
         formatter_class=lambda prog: SpacedHelpFormatter(prog, max_help_position=40, width=95) #SmartFormatter(prog, max_help_position=35, width=90)
     )
-    
     try:
-        version = pkg_resources.get_distribution('complax').version
-    except pkg_resources.DistributionNotFound:
-        version = "unknown" # Fallback se non è installato come pacchetto
+        # Recupera la versione del pacchetto installato
+        current_version = version('complax')
+    except PackageNotFoundError:
+        # Fallback se non è installato come pacchetto (es. se lo si esegue direttamente)
+        current_version = "unknown"
     
     parser.add_argument(
         '-v', '--version',
         action='version',
-        version=f'%(prog)s {version}',
+        version=f'complax {current_version}',
         help='Show the version number and exit.'
     )
     
