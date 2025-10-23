@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="complax", 
-    version="1.0.0.dev5",
+    version="1.0.1",
     author="Federica Lauria",
     author_email="federica.lauria95@gmail.com",
     description="A Python tool for automatic microsolvation and geometry optimization using xTB.",
