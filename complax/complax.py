@@ -15,6 +15,7 @@ from functools import partial
 from multiprocessing import Pool
 import tqdm
 from tabulate import tabulate
+import pkg_resources
 
 
 def print_banner():
@@ -186,6 +187,18 @@ def main():
 
         epilog="For further information, please contact the programme author.",
         formatter_class=lambda prog: SpacedHelpFormatter(prog, max_help_position=40, width=95) #SmartFormatter(prog, max_help_position=35, width=90)
+    )
+    
+    try:
+        version = pkg_resources.get_distribution('complax').version
+    except pkg_resources.DistributionNotFound:
+        version = "unknown" # Fallback se non è installato come pacchetto
+    
+    parser.add_argument(
+        '-v', '--version',
+        action='version',
+        version=f'%(prog)s {version}',
+        help='Show the version number and exit.'
     )
     
     parser.add_argument(

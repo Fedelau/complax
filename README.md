@@ -52,7 +52,7 @@ xTB is developed by the Grimme group and distributed under the Creative Commons 
 
 ## Quick Start
 
-Example input files are provided in the `examples/` folder.
+Example input files are provided in the `examples/` folder. (If you installed `complax` via `pip`, you can access these files by cloning the repository or downloading them directly from the [GitHub `examples` directory](https://github.com/Fedelau/complax/tree/main/examples)).
 
 This example shows how to position 3 tetrahydrofuran molecules (`thf.xyz`) around a lithium atom in methyllithium (`meli.xyz`).
 
