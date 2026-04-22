@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import sys
 import numpy as np
 import math
@@ -8,7 +10,6 @@ import subprocess
 from colorama import Fore, Style
 import shutil
 import argparse
-import textwrap
 from ase.io import read, write
 from ase import Atoms
 import threading
@@ -20,7 +21,7 @@ from importlib.metadata import version, PackageNotFoundError
 
 def print_banner() -> None:
     """Prints the application banner, version, and author information."""
-    # Recupero della versione per il banner
+    
     try:
         current_version = version('complax')
     except PackageNotFoundError:
@@ -346,7 +347,6 @@ def run_complax_workflow(args: argparse.Namespace) -> None:
     
     # Ranking e Keep-best logic
     if args.nstruct > 1 or args.keep_best:
-        # Recupero energie SP per il soluto e solvente singolo
         sp_energies= {}
         for mol in sp_list:
             cmd = f"xtb {mol}.xyz --namespace {mol} {args.lev} --chrg {args.chrg} --uhf {args.uhf}"
@@ -387,8 +387,60 @@ def run_complax_workflow(args: argparse.Namespace) -> None:
                         if os.path.exists(f"{name}{ext}"): os.remove(f"{name}{ext}")
 
     if args.solvfx:
-        # ... logica solvfx (omessa per brevità, resta invariata) ...
-        pass
+                print("")
+                print("                     ***************************")
+                print("                     * Effect of the Solvation *")
+                print("                     ***************************")
+                print("")
+
+                toten = []
+
+                for s in range(total_struct):
+                    for n in range(1, n_copies+1):
+                        try:
+                            with open(f"complax_struct_{n}solvent_{s+1}.xtbopt.xyz") as solv_en:
+                                en = solv_en.readlines()[1].split()[1]
+                                toten.append(en)
+                        except FileNotFoundError:
+                            continue
+
+                E_solvent = sp_energies.get(molBnoext)
+                E_reag = sp_energies.get(molAnoext)
+
+                toten.insert(0, E_solvent)
+                toten.insert(1, E_reag)
+
+                n = args.c
+
+                headers = [str(i) for i in range(1, n+1)]
+
+                E_solvent = toten[0]
+                E_reag = toten[1]
+
+                somma_reag_solv = [E_reag + i * E_solvent for i in range(1, n+1)]
+
+                calcolo_insieme = []
+                for i in range(1, n+1):
+                    if 1 + i < len(toten):
+                        calcolo_insieme.append(toten[1 + i])
+                    else:
+                        calcolo_insieme.append("N/A")
+
+                diff = []
+                for theo, calc in zip(somma_reag_solv, calcolo_insieme):
+                    if isinstance(calc, float):
+                        diff.append((calc - theo)*627.51)
+                    else:
+                        diff.append("N/A")
+
+                table = [
+                    ["Sum of reag + solv"] + somma_reag_solv,
+                    ["Tot Energy (Complex)"] + calcolo_insieme,
+                    ["ΔE (kcal/mol)"] + diff
+                ]
+
+                print(tabulate(table, headers=[""] + headers, tablefmt="grid", floatfmt=".6f"))
+    pass
         
     print("\nAll the results have been saved in the 'outplax' folder.")
 
