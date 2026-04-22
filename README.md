@@ -4,8 +4,8 @@
 Complax is a Python tool designed to position solvent molecules (provided as `.xyz` files) around a user-specified atom of another molecule, also supplied in `.xyz` format.  
 It was primarily developed for the microsolvation of small organic molecules, but it can also be applied to other molecular systems, for instance as a starting point for further modeling or optimization studies.
 
-After the solvent placement, the program performs a geometry optimization using the semiempirical [xTB method](https://wires.onlinelibrary.wiley.com/doi/10.1002/wcms.1493) <sup>1</sup>.  
-Optionally, the user can request an evaluation of the solvation effect in terms of potential energy differences.
+After the stochastic solvent placement, the program performs a geometry optimization using the semiempirical [xTB method](https://wires.onlinelibrary.wiley.com/doi/10.1002/wcms.1493) <sup>1</sup>.  
+Optionally, the user can request an evaluation of the solvation effect in terms of potential energy differences and perform a stochastic sampling to find the most stable solvent configurations.
 
 ## Installation
 
@@ -65,9 +65,9 @@ This example shows how to position 3 tetrahydrofuran molecules (`thf.xyz`) aroun
 python3 complax.py meli.xyz thf.xyz -a 5 2 -c 3
 ```
 3. What happens next? 
-   - The program first generates a file called `complax_input.xyz` containing the solute with the positioned solvent molecules.
-   - Then, a geometry optimization is performed using xTB for each numbers of solvent molecules.
-   - After optimization, the final geometry is saved in the `/outplax` directory named `complax_input_{n}solvent.xtbopt.xyz`, where {n} is the number of solvent molecules, choose with `-c`. 
+   - The program places the molecules avoiding steric clashes.
+   - Then, a geometry optimization is performed using xTB for each for each incremental number of solvent molecules.
+   - After optimization, the final geometry is saved in the `/outplax` directory named `complax_struct_{n}solvent_{s}.xtbopt.xyz`, where `{n}` is the number of solvent molecules and `{s}` is the structure index.
 
 ## Commandline Usage
 
@@ -78,11 +78,11 @@ __Mandatory arguments:__
 
 ` -a (MOLECULE ATOM) (SOLVENT ATOM)` : Atom numbers of molecule and solvent. Format: (MOLECULE ATOM) (SOLVENT ATOM) using 1-based indexing.
 
-` -c INT ` :  Number of file2 copies to be placed around the selected atom of file1. Default is 1.
+` -c INT ` :  Number of solvent copies (`solvent.xyz`) to be placed around the selected atom of the solute. Default is 1.
 
 __Optional arguments:__
 
-` -t INT ` : Target distace from ```MOLECULE ATOM```, in Ångstrom. Default is 2.0 Ångstrom.
+` -t FLOAT ` : Target distance from ```MOLECULE ATOM```, in Ångstrom. Default is 2.0 Ångstrom.
 
 ` --alpb SOLVENT` : Analytical linearized Poisson-Boltzman (ALPB) model, available solvents on xTB are acetone, acetonitrile, aniline, benzaldehyde, benzene, ch2cl2, chcl3, cs2, dioxane, dmf, dmso, ether, ethylacetate, furane, hexandecane, hexane, methanol, nitromethane, octanol, woctanol, phenol, toluene, thf, water. [[2]](https://pubs.acs.org/doi/full/10.1021/acs.jctc.1c00471)
 
@@ -90,24 +90,29 @@ __Optional arguments:__
 
 `-p INT` : Number of parallel processes. Default=1. During the initial optimization, the program will use the specified number of parallel processes. For subsequent optimizations (one for each solvent configuration), it will automatically launch as many parallel calculations as the number of solvent molecules selected.
 
-`-lev LEVEL` : Level of theory for the optimization. Default is --gnf2. Other options include --gfn0, --gfn1, --gfn2, --gfnff.
+`--lev LEVEL` : Level of theory for the optimization. Default is `--gfn2`. Other options include `--gfn0`, `--gfn1`, `--gfnff`.
 
-`-chrg INT` : Molecular charge. Default is 0.
+`--chrg INT` : Molecular charge. Default is 0.
 
 `-u, --uhf INT` : Number of unpaired electrons. Default is 1.
 
+`--maxtries INT` : Maximum number of attempts to place each solvent molecule without overlaps. If placement remains difficult, it is likely due to steric hindrance between the molecules. Default is 1000.
 
-`--maxtries INT` : Maximum number of attempts to place each solvent molecule without overlaps. If the desired number of solvent molecules cannot be positioned, try increasing this value. However, if placement remains difficult, it is likely due to steric hindrance between the molecules. Default is 1000.
+`--nstruct INT` : Number of stochastic, non-overlapping starting structures to generate and optimize. Ideal for exploring the conformational space of the solvated complex.
 
-`--solvfx` : If specified, do a evaluation of the effect of the solvation in term of potential energy among the different systems with an increasing number of solvent molecules.
+`--keep-best INT` : Filters the output to keep only the `N` lowest-energy optimized structures for each solvent configuration, automatically deleting the less stable ones.
+
+`--solvfx` : If specified, evaluates the effect of solvation in terms of potential energy differences among systems with an increasing number of solvent molecules.
 
 ## Tips and Troubleshooting 
 
-- The idea is to use a optimized geometry from a DFT calculations. COMPLAX keeps the internal geometry of both solute and solvent constraints, maintaining its original interatomic distances, and finding the best solvent molecules coordination.
+- **Stochastic Sampling**: For complex solvent environments, use `--nstruct 10 --keep-best 3`. COMPLAX will generate 10 different random orientations of the solvent cluster, optimize all of them, and retain only the 3 most thermodynamically stable configurations, saving you a massive amount of manual sorting.
 
-- COMPLAX positions solvent molecules randomly around the selected atom, avoiding overlaps and taking into account only the distance between the chosen atoms. Sometimes the molecules may not be positioned exactly as expected. It is recommended to check the result visually to ensure it is correct.
+- **Pre-optimized geometries**: The idea is to use an optimized geometry from a DFT calculations. COMPLAX keeps the internal geometry of both solute and solvent constraints, maintaining its original interatomic distances, and finding the best solvent molecules coordination.
 
-- If the positioning is not satisfactory, it is worth running the program again to obtain a better configuration.
+- **Visual Check**: COMPLAX positions solvent molecules randomly around the selected atom, avoiding overlaps and taking into account only the distance between the chosen atoms. Sometimes the molecules may not be positioned exactly as expected. It is recommended to check the result visually to ensure it is correct.
+
+- **Better luck next time!**: If the positioning is not satisfactory, it is worth running the program again to obtain a better configuration.
 
 - **Important**: COMPLAX writes output files in the outplax folder. If you want to keep multiple results, move the files out of outplax before running a new calculation, otherwise the previous files will be overwritten and lost.
 
