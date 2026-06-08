@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="complax", 
-    version="1.1.0",
+    version="1.1.1",
     author="Federica Lauria",
     author_email="federica.lauria95@gmail.com",
     description="A Python tool for automating microsolvation and geometry optimization using xTB.",
@@ -13,9 +13,6 @@ setup(
     keywords=['compchem', 'microsolvation', 'xtb', 'geometry optimization'],
     packages=find_packages(),
     include_package_data=True,
-    package_data={
-        "complax": ["examples/*"],
-    },
     install_requires=[
         "numpy",
         "ase",
@@ -25,6 +22,7 @@ setup(
     ],
     python_requires=">=3.8",
     classifiers=[
+        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.11",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
