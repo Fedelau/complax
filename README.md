@@ -1,5 +1,5 @@
 ![COMPLAX](complax-high-resolution-logo.png) 
-[![Python package](https://github.com/Fedelau/complax/actions/workflows/python-package.yml/badge.svg)](https://github.com/Fedelau/complax/actions/workflows/python-package.yml) ![PyPI](https://img.shields.io/pypi/v/complax.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+[![Python package](https://github.com/Fedelau/complax/actions/workflows/python-package.yml/badge.svg)](https://github.com/Fedelau/complax/actions/workflows/python-package.yml) ![PyPI](https://img.shields.io/pypi/v/complax.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![PyPI Downloads](https://static.pepy.tech/personalized-badge/complax?period=total&units=INTERNATIONAL_SYSTEM&left_color=GREY&right_color=GREEN&left_text=downloads)](https://pepy.tech/projects/complax)
 
 COMPLAX is an automated Python workflow designed to position solvent molecules (provided as `.xyz` files) around a user-specified atom of another molecule, also supplied in `.xyz` format.  
 It was primarily developed for the microsolvation of small organic molecules, but it can also be applied to other molecular systems, serving as a robust starting point for high-level quantum mechanical modeling (e.g., DFT).
