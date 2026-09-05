@@ -1,6 +1,7 @@
 ![COMPLAX](complax-high-resolution-logo.png) 
 [![Python package](https://github.com/Fedelau/complax/actions/workflows/python-package.yml/badge.svg)](https://github.com/Fedelau/complax/actions/workflows/python-package.yml) ![PyPI](https://img.shields.io/pypi/v/complax.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![PyPI Downloads](https://static.pepy.tech/personalized-badge/complax?period=total&units=INTERNATIONAL_SYSTEM&left_color=GREY&right_color=GREEN&left_text=downloads)](https://pepy.tech/projects/complax)
 
+
 COMPLAX is an automated Python workflow designed to position solvent molecules (provided as `.xyz` files) around a user-specified atom of another molecule, also supplied in `.xyz` format.  
 It was primarily developed for the microsolvation of small organic molecules, but it can also be applied to other molecular systems, serving as a robust starting point for high-level quantum mechanical modeling (e.g., DFT).
 
@@ -139,7 +140,7 @@ __Optional arguments:__
 | `--chrg INT` | Molecular charge. | `0` |
 | `-u`, `--uhf INT` | Number of unpaired electrons. | `0` |
 | `--res INT` | Number of points in the Fibonacci spherical grid. | `10000` |
-| `--nstruct INT` | Number of stochastic, non-overlapping starting structures to generate and optimize. Ideal for exploring the conformational space of the solvated complex. | *None* |
+| `--nstruct INT` | Number of stochastic, non-overlapping starting structures to generate and optimize. Ideal for exploring the conformational space of the solvated complex. | `400` |
 | `--keep-best INT` | Filters the output to keep only the `N` lowest-energy optimized structures for each solvent configuration, automatically deleting the less stable ones. | *None* |
 | `--solvfx` | Evaluates the effect of solvation in terms of potential energy differences among systems with an increasing number of solvent molecules. | *False* |
 | `--cutoff FLOAT` | Steric overlap distance threshold in Ångstrom. | `1.6` |
@@ -147,7 +148,7 @@ __Optional arguments:__
 
 ## Tips and Troubleshooting 
 
-- **Stochastic Sampling**: For complex solvent environments, use `--nstruct 10 --keep-best 3`. COMPLAX will generate 10 different random orientations of the solvent cluster, optimize all of them, and retain only the 3 most thermodynamically stable configurations, saving you a massive amount of manual sorting.
+- **Stochastic Sampling**: For complex solvent environments, use `--nstruct 1000 --keep-best 3`. COMPLAX will generate 1000 different random orientations of the solvent cluster, optimize all of them, and retain only the 3 most thermodynamically stable configurations, saving you a massive amount of manual sorting. *(Note: The number of generated structures is equal to `--nstruct` multiplied by the number of solvent molecules, `-c`).*
 
 - **Pre-optimized geometries**: The ideal workflow uses pre-optimized input geometries from prior DFT calculations. COMPLAX keeps the internal geometry of both solute and solvent rigidly constrained during the entire xTB optimization process. This maintains their original intramolecular distances while exclusively allowing the exploration of the best intermolecular solvent coordination.
 
@@ -183,5 +184,9 @@ See the [LICENSE](LICENSE) file for the full text.
 
 ## Citation
 
-If you use COMPLAX in your research, please cite our upcoming paper:
-*(Placeholder for the journal reference - currently under review).*
+If you use COMPLAX in your research, please cite our paper:
+
+**COMPLAX: A Python Tool Package for Automated Microsolvation of Organic Molecules**  
+Federica Lauria and Andrea Maranzana.  
+*Journal of Chemical Information and Modeling*, 2026.  
+DOI: [10.1021/acs.jcim.6c02105](https://doi.org/10.1021/acs.jcim.6c02105)

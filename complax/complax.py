@@ -27,7 +27,7 @@ def print_banner() -> None:
     try:
         current_version = version('complax')
     except PackageNotFoundError:
-        current_version = "1.1.1"
+        current_version = "1.1.2"
 
     # --- layout ---
     left_margin = 11  
@@ -74,6 +74,7 @@ def print_banner() -> None:
     author = "Developed by Federica Lauria and Andrea Maranzana"
     affiliation = "University of Turin (2026)"
     ver_str = f"Version {current_version}"
+    citation = "Please cite: https://doi.org/10.1021/acs.jcim.6c02105"
 
     print()
     print(" " * left_margin + " " + "_" * width + " ")
@@ -83,6 +84,8 @@ def print_banner() -> None:
     print(" " * left_margin + f"|{affiliation.center(width)}|")
     print(" " * left_margin + f"|{ver_str.center(width)}|")
     print(" " * left_margin + "|" + "_" * width + "|")
+    print()
+    print(" " * left_margin + f"*{citation.center(width)}*")
     print("\n")
      
 
@@ -232,7 +235,7 @@ def task(molecola: str, alpb: str, gbsa: str, gbe: str, con: str, lev: str, chrg
     if "abnormal" in result.stderr.lower():
         print(Fore.RED + result.stderr + Style.RESET_ALL, molecola)
 
-class SpacedHelpFormatter(argparse.HelpFormatter):
+class SpacedHelpFormatter(argparse.RawDescriptionHelpFormatter):
     def add_argument(self, action):
         super().add_argument(action)
         self._add_item(lambda *args: "", [])
@@ -465,7 +468,11 @@ def run_complax_workflow(args: argparse.Namespace) -> None:
                 best = struct_energies[:args.keep_best]
                 discarded = struct_energies[args.keep_best:]
                 for name, en in discarded:
-                    for file_to_delete in glob.glob(f"{name}*"):
+                    for file_to_delete in glob.glob(f"{name}.*"):
+                        if os.path.exists(file_to_delete):
+                            os.remove(file_to_delete)
+
+                    for file_to_delete in glob.glob(f"{name}_preopt.*"):
                         if os.path.exists(file_to_delete):
                             os.remove(file_to_delete)
 
@@ -532,14 +539,14 @@ def main():
     parser = BannerArgumentParser(
         usage='%(prog)s <file1.xyz> <file2.xyz> [options]',
         description='COMPLAX: A tool for automated microsolvation and geometry optimization using xTB.',
-        epilog="For further information, please contact the programme author.",
+        epilog="Please cite: https://doi.org/10.1021/acs.jcim.6c02105\nFor further information, please contact the programme author.",
         formatter_class=lambda prog: SpacedHelpFormatter(prog, max_help_position=40, width=95) 
     )
     
     try:
         current_version = version('complax')
     except PackageNotFoundError:
-        current_version = "1.1.1"
+        current_version = "1.1.2"
     
     parser.add_argument('-v', '--version', action='version', version=f'complax {current_version}')
     # --- Positional Arguments ---
@@ -562,7 +569,7 @@ def main():
     parser.add_argument('-p', type=int, default=1, help='Number of processors for parallel execution (default: 1).')
 
     # --- Analysis and Ranking ---
-    parser.add_argument('--nstruct', type=int, default=1, help='Number of different stochastic structures to generate.')
+    parser.add_argument('--nstruct', type=int, default=400, help='Number of different stochastic structures to generate. (default: 400)')
     parser.add_argument('--keep-best', type=int, metavar='N', help='Keep only the N lowest-energy optimized structures.')
     parser.add_argument('--solvfx', action='store_true', help='Calculate and display the solvation energy effect table.')
     parser.add_argument('--cutoff', type=float, default=1.6, metavar="FLOAT", help='Steric overlap distance threshold in Å (default: 1.6).')
